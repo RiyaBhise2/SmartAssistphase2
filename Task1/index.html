@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lead Creation Form</title>
+
+    <style>
+    body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: #f2f5f9;
+        margin: 0;
+        padding: 40px;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    form {
+        background: #ffffff;
+        max-width: 520px;
+        margin: auto;
+        padding: 25px 30px;
+        border-radius: 10px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+        display: block;
+        margin-top: 14px;
+        font-weight: 600;
+        color: #555;
+    }
+
+    button {
+        width: 100%;
+        margin-top: 22px;
+        padding: 12px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.2s ease-in-out;
+    }
+
+    button:hover {
+        background: #0056b3;
+    }
+
+    h3 {
+        text-align: center;
+        margin-top: 30px;
+        color: #333;
+    }
+
+    #response {
+        max-width: 520px;
+        margin: 15px auto;
+        background: #1e1e1e;
+        color: #d4d4d4;
+        padding: 15px;
+        border-radius: 8px;
+        font-size: 13px;
+        overflow-x: auto;
+        white-space: pre-wrap;
+    }
+    input,
+    select {
+        width: 100%;
+        padding: 10px 12px;
+        margin-top: 6px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+        box-sizing: border-box; 
+    }
+    input:focus,
+    select:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.15);
+    }
+
+</style>
+
+</head>
+<body>
+
+<h2>Create Lead</h2>
+
+<form id="leadForm">
+    <label>Created At</label>
+    <input type="datetime-local" id="created_at" class="form-input" required>
+
+    <label>Dealer Name</label>
+    <input type="text" id="dealer_name" class="form-input" required>
+
+    <label>Lead Owner</label>
+    <input type="text" id="lead_owner" class="form-input" required>
+
+    <label>First Name</label>
+    <input type="text" id="fname" class="form-input" required>
+
+    <label>Last Name</label>
+    <input type="text" id="lname" class="form-input" required>
+
+    <label>Email</label>
+    <input type="email" id="email" class="form-input" required>
+
+    <label>Mobile</label>
+    <input  type="tel" id="mobile" pattern="[0-9]{10}" maxlength="10" class="form-input" required>
+
+    <label>Lead Source</label>
+    <input type="text" id="lead_source" class="form-input">
+
+    <label>Brand</label>
+    <select id="brand" class="form-input" required>
+        <option value="">Select Brand</option>
+        <option value="Jaguar">Jaguar</option>
+        <option value="Land Rover">Land Rover</option>
+    </select>
+
+    <label>PMI</label>
+    <select id="PMI" class="form-input" required>
+        <option value="">Select PMI</option>
+        <option value="Defender">Defender</option>
+        <option value="Discovery">Discovery</option>
+        <option value="Discovery Sport">Discovery Sport</option>
+        <option value="F-PACE">F-PACE</option>
+        <option value="F-TYPE">F-TYPE</option>
+        <option value="I-PACE">I-PACE</option>
+        <option value="New Range Rover">New Range Rover</option>
+        <option value="New Range Rover Evoque">New Range Rover Evoque</option>
+        <option value="New Range Rover Sport">New Range Rover Sport</option>
+        <option value="Range Rover">Range Rover</option>
+        <option value="Range Rover Evoque">Range Rover Evoque</option>
+        <option value="Range Rover Sport">Range Rover Sport</option>
+        <option value="Range Rover Velar">Range Rover Velar</option>
+        <option value="XE">XE</option>
+        <option value="XF">XF</option>
+        <option value="XJ">XJ</option>
+    </select>
+
+    <label>Purchase Type</label>
+    <input type="text" id="purchase_type" class="form-input" value="New Vehicle"
+    readonly type="text">
+
+    <label>Enquiry Type</label>
+    <select id="enquiry_type" class="form-input" required>
+        <option value="">Select Enquiry Type</option>
+        <option value="KMI">KMI</option>
+        <option value="Generic">Generic</option>
+    </select>
+
+    <label>Status</label>
+    <select id="status" class="form-input" required>
+        <option value="">Select Status</option>
+        <option value="New">New</option>
+        <option value="Follow Up">Follow Up</option>
+        <option value="Lost">Lost</option>
+        <option value="Qualified">Qualified</option>
+    </select>
+
+    <label>CXP Lead Code</label>
+    <input type="text" id="cxp_lead_code" class="form-input">
+
+    <button type="submit">Submit</button>
+</form>
+
+<h3>API Response</h3>
+<pre id="response"></pre>
+
+<script>
+document.getElementById("leadForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const payload = [{
+        created_at: document.getElementById("created_at").value.replace("T", " ") + ":00.000",
+        dealer_name: document.getElementById("dealer_name").value,
+        lead_owner: document.getElementById("lead_owner").value,
+        fname: document.getElementById("fname").value,
+        lname: document.getElementById("lname").value,
+        email: document.getElementById("email").value,
+        mobile: document.getElementById("mobile").value, 
+        lead_source: document.getElementById("lead_source").value,
+        brand: document.getElementById("brand").value,
+        PMI: document.getElementById("PMI").value,
+        purchase_type: document.getElementById("purchase_type").value,
+        enquiry_type: document.getElementById("enquiry_type").value,
+        status: document.getElementById("status").value,
+        cxp_lead_code: document.getElementById("cxp_lead_code").value
+    }];
+
+    fetch("https://uat.smartassistapp.in/api/bulk-insert/leads/create-bulk", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Basic " + btoa("admin:secret123")
+        },
+        body: JSON.stringify(payload) 
+    })
+    .then(res => res.json())  
+    .then(data => {
+        document.getElementById("response").textContent =
+            JSON.stringify(data, null, 2);  
+    })
+    .catch(err => {
+        document.getElementById("response").textContent = err;  
+    });
+});
+</script>
+</body>
+</html>
