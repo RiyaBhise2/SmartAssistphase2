@@ -8,8 +8,9 @@ const encodeBasicAuth = (username, password) => {
 
 const app = express();
 const upload = multer({ storage: multer.memoryStorage() });
+const cors = require("cors");
+app.use(cors({origin:'*'}));
 
-//app.post("/exceltojson", upload.single("file"), (req, res) => {
 app.post("/exceltojson", upload.single("file"), async (req, res) => {
   try {
     if (!req.file) {
@@ -106,7 +107,7 @@ app.post("/exceltojson", upload.single("file"), async (req, res) => {
     }); 
 
     //  JSON RESPONSE ONLY
-    //return res.status(200).json(jsonData);
+    
     const apiUrl = "https://uat.smartassistapp.in/api/bulk-insert/leads/create-bulk";
 
     try {
